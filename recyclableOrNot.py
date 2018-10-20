@@ -10,6 +10,7 @@ import cv2
 import time 
 from datetime import *
 from PIL import Image
+import log_functions
 
 def webcam():
     cap = cv2.VideoCapture(1)
@@ -26,7 +27,7 @@ def webcam():
     # cv2.imwrite( "/home/ahalyamandana/Desktop/test.jpg", img_cropped);
     
         #TODO fix file path, change to relative path
-        filename = "datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+        filename = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
         path = "/home/ahalyamandana/Desktop/" + filename +".jpg"
         cv2.imwrite(path, img);
 
@@ -51,13 +52,17 @@ def main():
         if (prevLidCondition != lidCondition and lidCondition == "c"):
 
             #Take image
-            webcam()
+            string = webcam()
             print "Taking image"
             isRecyclable = raw_input("Is this recyclable?\n")
             if (isRecyclable == 'y'):
                 print("This is recyclable\n")
+                log_functions.log(string+isRecyclable)
             elif (isRecyclable == 'n'):
                 print("This is not recyclable\n")
+                log_functions.log(string+isRecyclable)
+                
+            
 
 if __name__ == '__main__':
     main()
