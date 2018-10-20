@@ -24,8 +24,9 @@ if ret:
     # x1, y1, x2, y2 = 175, 175, 375, 375
     # img_cropped = img[y1:y2, x1:x2]
     # cv2.imwrite( "/home/ahalyamandana/Desktop/test.jpg", img_cropped);
-    filename1 = "/home/ahalyamandana/Desktop/" + datetime.now().strftime("%Y-%m-%d-%H-%M-%S")+".jpg"
-    cv2.imwrite(filename1, img);
+    filename = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+    path = "/home/ahalyamandana/Desktop/" + filename +".jpg"
+    cv2.imwrite(path, img);
 
         
            
