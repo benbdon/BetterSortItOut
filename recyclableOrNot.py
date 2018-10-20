@@ -40,7 +40,7 @@ def webcam():
 
 def main():
     lidCondition = "c"
-    string
+    
     while (True):
         #Hold prev condition
         prevLidCondition = lidCondition
