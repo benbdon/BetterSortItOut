@@ -62,24 +62,27 @@ def main():
         log_functions.log(string + " " + isRecyclable)
 
     #MAIN LOOP
-    while (True):
+    try:
+        while (True):
 
-        prevLidCondition = lidCondition #Hold prev condition
-        lidCondition = ser.readline() #Get new lid condition
+            prevLidCondition = lidCondition #Hold prev condition
+            lidCondition = ser.readline() #Get new lid condition
 
-        #Check if the lid went from open to close
-        if (prevLidCondition != lidCondition and lidCondition == "c\n"):
+            #Check if the lid went from open to close
+            if (prevLidCondition != lidCondition and lidCondition == "c\n"):
 
-            #Take image
-            string = webcam()
-            print "Image captured"
+                #Take image
+                string = webcam()
+                print "Image captured"
 
-            #Get user feedback on the image and log
-            isRecyclable = raw_input("Is this recyclable? Type y or n.\n")
-            if (isRecyclable == 'y'):
-                log_functions.log(string+isRecyclable)
-            elif (isRecyclable == 'n'):
-                log_functions.log(string+isRecyclable)
+                #Get user feedback on the image and log
+                isRecyclable = raw_input("Is this recyclable? Type y or n.\n")
+                if (isRecyclable == 'y'):
+                    log_functions.log(string +" " + isRecyclable)
+                elif (isRecyclable == 'n'):
+                    log_functions.log(string + " " + isRecyclable)
+    except KeyboardInterrupt:
+        print "\n\nTrashcan OUT!"
 
 if __name__ == '__main__':
     main()
