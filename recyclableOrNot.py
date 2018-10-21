@@ -7,11 +7,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import copy
 import cv2
-import time 
+import time as t
 from datetime import *
 from PIL import Image
 import log_functions
-
+import serial
 from Tkinter import *
 from PIL import ImageTk, Image
 import os
@@ -46,7 +46,7 @@ def trash(string1):
     log_functions.log(string1+' trash')
     
 def callback(panel, newString):
-    path2="/home/ahalyamandana/Desktop/"+newString+".jpg"
+    path2="/home/bendon/Dropbox/Side Project/TrashProject/images"+newString+".jpg"
     img2 = ImageTk.PhotoImage(Image.open(path2))
     panel.configure(image=img2)
     panel.image = img2
@@ -70,13 +70,6 @@ def main():
     string = webcam()
     print "Image captured"
 
-    #Get user feedback on the image and log
-    isRecyclable = raw_input("Is this recyclable? Type y or n.\n")
-    if (isRecyclable == 'y'):
-        log_functions.log(string + " " + isRecyclable)
-    elif (isRecyclable == 'n'):
-        log_functions.log(string + " " + isRecyclable)
-
     #MAIN LOOP
     try:
         while (True):
@@ -89,7 +82,7 @@ def main():
                 oldString = string
                 #Take image
                 string = webcam()
-                print "Image captured"
+                print "Next image captured"
 
                 #Get user feedback through Tkinter GUI on the image and log
                 root = Tk()
