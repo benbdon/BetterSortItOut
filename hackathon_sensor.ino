@@ -51,9 +51,9 @@ void setup() {
   digitalWrite(Led, last_lid_state);
   
   if(last_lid_state)
-    Serial.print('c');
+    Serial.print("c\n");
   else
-    Serial.print('o');
+    Serial.print("o\n");
 
 
 }
@@ -82,9 +82,9 @@ void loop() {
   {
     // Send the established state
     if(last_lid_state)
-      Serial.print('c');
+      Serial.print("c\n");
     else
-      Serial.print('o');
+      Serial.print("o\n");
 
     // Reset the last send time
     lastTransmitTime = millis();
