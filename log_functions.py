@@ -3,39 +3,6 @@
 import sys
 import datetime
 
-
-
-
-
-
-
-
-
-
-def main():
-
-    f = open("trash_log.txt", "w")
-
-
-    while(1):
-
-        response = raw_input("Was that trash? \n(y/n/x)")
-
-        case(response)
-
-        f.write("string")
-
-
-
-
-
-
-
-    # Handle Shutdown
-
-
-
-
 def log(arg):
     f = open("trash_log.txt","a")
 
@@ -52,10 +19,3 @@ def new_log():
 
     f.write('')
     f.close()
-
-
-
-
-
-if __name__ == '__main__':
-    main()

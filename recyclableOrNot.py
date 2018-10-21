@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# this program takes user input from a keyboard (y/n)
+# this program captures an image every time the trash can lid opens and closes
 import sys
 import os
 import matplotlib
@@ -7,10 +7,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import copy
 import cv2
-import time 
+import time as t
 from datetime import *
 from PIL import Image
 import log_functions
+import serial
 
 def webcam():
     cap = cv2.VideoCapture(1)
@@ -22,47 +23,63 @@ def webcam():
     ret, img = cap.read()
     img = cv2.flip(img, 1)
     if ret:
-    # x1, y1, x2, y2 = 175, 175, 375, 375
-    # img_cropped = img[y1:y2, x1:x2]
-    # cv2.imwrite( "/home/ahalyamandana/Desktop/test.jpg", img_cropped);
-    
+
         #TODO fix file path, change to relative path
         filename = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-        path = "/home/ahalyamandana/Desktop/" + filename +".jpg"
+        path = "/home/bendon/Dropbox/Side Project/TrashProject/images" + filename +".jpg"
         cv2.imwrite(path, img);
 
-        
-           
-# Following line should appear but is not working with opencv-python package
     cap.release()
     cv2.destroyAllWindows
     return filename
 
-def main():
-    lidCondition = "c"
-    
-    while (True):
-        #Hold prev condition
-        prevLidCondition = lidCondition
 
-        #"Manual" open/close switch
-        lidCondition = raw_input("Type o and c\n")
+
+def main():
+
+    #establish serial connection to Arduino
+    ser = serial.Serial('/dev/ttyACM1', 9600, timeout = 1.0)
+
+    #necessary evil to let the Arduino reboot after establishing a connection
+    ser.setDTR(0)
+    ser.flush()
+    ser.flushInput()
+    ser.flushOutput()
+    t.sleep(1.0)
+
+    #initialize the lid to closed
+    lidCondition = "c\n"
+
+    #Capture a baseline photo
+    string = webcam()
+    print "Image captured"
+
+    #Get user feedback on the image and log
+    isRecyclable = raw_input("Is this recyclable? Type y or n.\n")
+    if (isRecyclable == 'y'):
+        log_functions.log(string + " " + isRecyclable)
+    elif (isRecyclable == 'n'):
+        log_functions.log(string + " " + isRecyclable)
+
+    #MAIN LOOP
+    while (True):
+
+        prevLidCondition = lidCondition #Hold prev condition
+        lidCondition = ser.readline() #Get new lid condition
 
         #Check if the lid went from open to close
-        if (prevLidCondition != lidCondition and lidCondition == "c"):
+        if (prevLidCondition != lidCondition and lidCondition == "c\n"):
 
             #Take image
             string = webcam()
-            print "Taking image"
-            isRecyclable = raw_input("Is this recyclable?\n")
+            print "Image captured"
+
+            #Get user feedback on the image and log
+            isRecyclable = raw_input("Is this recyclable? Type y or n.\n")
             if (isRecyclable == 'y'):
-                print("This is recyclable\n")
                 log_functions.log(string+isRecyclable)
             elif (isRecyclable == 'n'):
-                print("This is not recyclable\n")
                 log_functions.log(string+isRecyclable)
-                
-            
 
 if __name__ == '__main__':
     main()
