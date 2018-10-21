@@ -7,11 +7,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 import copy
 import cv2
-import time as t
+import time 
 from datetime import *
 from PIL import Image
 import log_functions
-import serial
+
+from Tkinter import *
+from PIL import ImageTk, Image
+import os
+import subprocess
 
 def webcam():
     cap = cv2.VideoCapture(1)
@@ -33,7 +37,19 @@ def webcam():
     cv2.destroyAllWindows
     return filename
 
+def recyclable(string1):
+    
+    log_functions.log(string1+' recyclable')
 
+def trash(string1):
+    
+    log_functions.log(string1+' trash')
+    
+def callback(panel, newString):
+    path2="/home/ahalyamandana/Desktop/"+newString+".jpg"
+    img2 = ImageTk.PhotoImage(Image.open(path2))
+    panel.configure(image=img2)
+    panel.image = img2
 
 def main():
 
@@ -75,12 +91,27 @@ def main():
                 string = webcam()
                 print "Image captured"
 
-                #Get user feedback on the image and log
-                isRecyclable = raw_input("Is this recyclable? Type y or n.\n")
-                if (isRecyclable == 'y'):
-                    log_functions.log(string + " " + isRecyclable)
-                elif (isRecyclable == 'n'):
-                    log_functions.log(string + " " + isRecyclable)
+                #Get user feedback through Tkinter GUI on the image and log
+                root = Tk()
+                root.title("Better Sort It Out")
+                root.geometry("500x500")#Width x Height
+
+                #old trash image 
+                img = ImageTk.PhotoImage(Image.open("/home/bendon/Dropbox/Side Project/TrashProject/images"+oldString+".jpg"))
+                panel = Label(root, image = img)
+                panel.pack(side="top", fill = "both", expand = "yes")
+
+                app = Frame(root)
+                app.pack(side='bottom',pady=10)
+                button1 = Button(app, text = "Recyclable",font=("Garamond", 16), command= lambda: recyclable(string),bg='#ffa64d')
+                button1.pack()
+                button2 = Button(app, text = "Trash",font=("Garamond", 16),command= lambda: trash(string),bg='#ff3333')
+                button2.pack()
+                lbl = Label(app,text="",font=("Garamond", 16))
+                lbl.pack()
+                root.bind("<Return>", lambda e: callback(panel,string))
+                root.mainloop()
+                
     except KeyboardInterrupt:
         print "\n\nTrashcan OUT!"
 
