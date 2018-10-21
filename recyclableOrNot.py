@@ -50,6 +50,11 @@ def callback(panel, newString):
     img2 = ImageTk.PhotoImage(Image.open(path2))
     panel.configure(image=img2)
     panel.image = img2
+    lbl.config(text = "New Image. Classify as 'Recyclable' or 'Trash'. Close window to view next trash item.")
+    lbl.pack()
+    
+def close_window(window): 
+    window.destroy()
 
 def main():
 
@@ -96,13 +101,16 @@ def main():
 
                 app = Frame(root)
                 app.pack(side='bottom',pady=10)
-                button1 = Button(app, text = "Recyclable",font=("Garamond", 16), command= lambda: recyclable(string),bg='#ffa64d')
-                button1.pack()
-                button2 = Button(app, text = "Trash",font=("Garamond", 16),command= lambda: trash(string),bg='#ff3333')
-                button2.pack()
-                lbl = Label(app,text="",font=("Garamond", 16))
+                lbl = Label(app,text="Previous Image. Hit 'Enter' to view new image",font=("Comic Sans", 16))
                 lbl.pack()
-                root.bind("<Return>", lambda e: callback(panel,string))
+                button1 = Button(app, text = "Recyclable",font=("Comic Sans", 16), command= lambda: recyclable(string),bg='#00FA9A')
+                button1.pack()
+                button2 = Button(app, text = "   Trash    ",font=("Comic Sans", 16),command= lambda: trash(string),bg='#FA8072')
+                button2.pack()
+                button3 = Button(app, text = "Close and view next image", font=("Comic Sans", 16),command = lambda: close_window(root), bg = '#FFFAF0')
+                button3.pack()
+                
+                root.bind("<Return>", lambda e: callback(panel,string,lbl))
                 root.mainloop()
                 
     except KeyboardInterrupt:
