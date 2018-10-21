@@ -78,7 +78,7 @@ def main():
                 #Get user feedback on the image and log
                 isRecyclable = raw_input("Is this recyclable? Type y or n.\n")
                 if (isRecyclable == 'y'):
-                    log_functions.log(string +" " + isRecyclable)
+                    log_functions.log(string + " " + isRecyclable)
                 elif (isRecyclable == 'n'):
                     log_functions.log(string + " " + isRecyclable)
     except KeyboardInterrupt:
