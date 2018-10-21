@@ -70,7 +70,7 @@ def main():
 
             #Check if the lid went from open to close
             if (prevLidCondition != lidCondition and lidCondition == "c\n"):
-
+                oldString = string
                 #Take image
                 string = webcam()
                 print "Image captured"
